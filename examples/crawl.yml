@@ -1,0 +1,39 @@
+# Example scheduled crawler workflow (copied from fitzyracing1/darks).
+# Place this at .github/workflows/crawl.yml in a state repo (e.g. fitzyracing1/darks).
+# Do NOT enable it in dark-crawler itself — this file is documentation only.
+name: crawl
+on:
+  schedule:
+    - cron: '23 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+permissions:
+  contents: write   # commit darks.json / QUEUE.md to THIS repo
+  issues: write     # issues in THIS repo only (GITHUB_TOKEN cannot write anywhere else)
+concurrency:
+  group: crawl
+  cancel-in-progress: false
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: fitzyracing1/dark-crawler
+          path: .dc
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: crawl for dark lights
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DARKS_REPO: ${{ github.repository }}
+        run: node .dc/bin/dark-crawl.mjs --dir . --max-repos 120
+      - name: commit results
+        run: |
+          git config user.name "dark-crawler"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add darks.json QUEUE.md status.json queued.json
+          git diff --cached --quiet || git commit -m "crawl: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push

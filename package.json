@@ -1,0 +1,26 @@
+{
+  "name": "dark-crawler",
+  "version": "0.1.0",
+  "description": "Scan popular GitHub repos for dark CI lights (lit = 0, dark = 1). Writes only to a designated darks repo.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Joshua Almeida",
+  "repository": "github:fitzyracing1/dark-crawler",
+  "bin": {
+    "dark-crawl": "bin/dark-crawl.mjs"
+  },
+  "main": "lib/darks.mjs",
+  "files": [
+    "bin",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --check bin/dark-crawl.mjs && node --check lib/darks.mjs && node --test test/darks.test.mjs",
+    "check": "node --check bin/dark-crawl.mjs && node --check lib/darks.mjs"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+darks.json
+QUEUE.md
+queued.json
+status.json
+*.log
+.DS_Store
