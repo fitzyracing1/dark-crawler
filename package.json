@@ -22,5 +22,9 @@
   "scripts": {
     "test": "node --check bin/dark-crawl.mjs && node --check lib/darks.mjs && node --test test/darks.test.mjs",
     "check": "node --check bin/dark-crawl.mjs && node --check lib/darks.mjs"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/fitzyracing1"
   }
 }
